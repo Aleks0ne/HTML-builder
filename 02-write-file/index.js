@@ -1,26 +1,14 @@
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline')
-const filePath = path.join(__dirname, 'text.txt');
+const process = require('process');
 
+const textPath = path.join(__dirname, 'text.txt');
+const writeStream = fs.createWriteStream(textPath, 'utf8');
 
-const text = fs.createWriteStream(filePath);
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout,
-	prompt: console.log('Hello! Enter text end check text.txt')
-});
-
-
-rl.on('line', (line) => {
-	if(line == 'exit'){
-		rl.close();
-	}else{
-		text.write(`${line}\n`);
-	}
-});
-
-rl.on('close', () => {
-	console.log('Bye! Have a nice day!');
-	text.end();
-});
+process.stdout.write('Hello! Write your message please: \n\n');
+process.stdin.resume()
+process.stdin.on('data', (data) => {
+  (String(data).toLowerCase().trim() == 'exit') ? process.exit() : writeStream.write(data);
+})
+process.on('SIGINT', () => process.exit());
+process.on('exit', () => console.log('\n Thanks for your time)'));

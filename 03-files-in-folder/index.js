@@ -3,6 +3,7 @@ const path = require('path');
 
 const secretPath = path.join(__dirname, 'secret-folder');
 
+
 async function readDirectory(secretFolder) {
   const dir = await fs.promises.readdir(secretFolder, { withFileTypes: true });
   for await (let entry of dir) {
@@ -19,4 +20,5 @@ async function readDirectory(secretFolder) {
     }
   }
 }
+
 readDirectory(secretPath);
